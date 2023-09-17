@@ -1,6 +1,6 @@
 <h1>This project is created to understand springboot concetps.<h1>
 <h2It stores the contacts.<h2>
-<p>Below modules are included in project:\n
+<p>Below modules are included in project:
 1)Signup
 2)Login
 3)Add Contact with image
