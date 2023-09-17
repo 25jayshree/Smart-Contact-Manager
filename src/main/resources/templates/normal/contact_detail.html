@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="normal/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8" />
+<title>User Dashboard</title>
+</head>
+<body>
+	<section>
+		<div class="container text-center">
+			<h1>Showing contact details</h1>
+
+		</div>
+		<div class="card mr-3 ml-3" th:if=${contact_det}>
+
+			<div class="card-body">
+
+				<div class="container text-center">
+
+					<img alt="" src="" style="height: 200px; width: 200px;"
+						th:src="@{'/img/' + ${contact_det.image}}" class="my-profile_pic">
+
+					<h3 class="mt-3">
+						<span th:text="${contact_det.name}"></span>(<span
+							th:text="${contact_det.secondName}"></span>)
+					</h3>
+
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">#ID</th>
+								<th scope="col"><span th:text="'SCM'+${contact_det.cid}"></span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">Email</th>
+								<td><span th:text="${contact_det.email}"></span></td>
+							</tr>
+							<tr>
+								<th scope="row">Phone</th>
+								<td><span th:text="${contact_det.phone}"></span></td>
+							</tr>
+							<tr>
+								<th scope="row">Work</th>
+								<td><span th:text="${contact_det.work}"></span></td>
+							</tr>
+						</tbody>
+
+
+					</table>
+
+					<div class="description mt-3">
+						<p th:utext="${contact_det.description}">
+					</div>
+
+					<div class="container">
+						<form method="post"
+							th:action="@{'/user/update-contact/' + ${contact_det.cid}}">
+
+							<button type="submit" class="btn btn-primary btn-sm">Update</button>
+						</form>
+						<a th:onclick="|deleteContact(${contact_det.cid})|"
+							class="btn btn-danger btn-sm">Delete</a>
+
+					</div>
+
+
+				</div>
+			</div>
+
+
+		</div>
+
+		<h2 class="text-center p-3 bg-danger text-white"
+			th:unless="${contact_det}">Ooops!! you don't have permission to
+			see other user contacts</h2>
+
+
+	</section>
+
+</body>
+</html>

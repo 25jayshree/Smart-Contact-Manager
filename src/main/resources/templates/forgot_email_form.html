@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+<head>
+	<meta charset="UTF-8" />
+	<title>Forgot Password</title>
+</head>
+<body>
+
+
+
+<section class="vh-100">
+  <div class="container py-5 h-100">
+    <div class="row d-flex align-items-center justify-content-center h-100">
+      <div class="col-md-8 col-lg-7 col-xl-6">
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+          class="img-fluid" alt="Phone image">
+      </div>
+      <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+      
+        
+        <div th:if="${session.message}" class="container text-center">
+			<div class="alert alert-danger my-2"
+				role="alert">
+				 <span th:text="${session.message}"></span>
+				  
+			</div>
+		</div> 
+        
+        
+        <!-- email form -->
+        <h4 class="text-center">Your registered email</h4>
+       <form action="" th:action="@{/send-otp}" method = "post">
+       
+       <div class="form-group">
+       <input required name="email" type="email"  placeholder="Enter email here" class="form-control"/>
+       </div>
+       
+       <div class="container text-center mt-3">
+       
+       <button type="submit" class="btn btn-warning"> Send OTP </button>
+       </div>
+       
+       </form>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+	
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="normal/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8" />
+<title>User Dashboard</title>
+</head>
+<body>
+	<section>
+		<div class="container">
+		<div class="card text-center">
+		<div class="card-body">
+			<div class="container text-center">
+	
+	<img alt="" src="" style="height: 200px; width: 200px;"
+						th:src="@{'/img/register.png'}" class="my-profile_pic">
+	
+		</div>
+		
+		<h1 class="text-center mt-3 text-secondary">
+		Start Adding you contacts
+		</h1>
+		
+		<a th:href="@{/user/add-contact}" class="btn btn-primary btn-block mt-4"> Add New Contact</a>
+		
+		<hr />
+		
+		<h3 class="my-3">Donate Us</h3>
+		<input id="payment_field" type="text" class="form-control my-2" placeholder="Enter Amount here" />
+		
+		<div class="container">
+		<button onclick="paymentStart()" class="btn btn-success">Pay</button>
+		</div>
+		</div>
+		
+		
+		</div>
+		</div>
+		
+			<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+		
+		<script>
+		$(document).ready(()=>{
+			$(".item").removeClass("active");
+			$("#home-link").addClass("active");
+		});
+		</script>
+		
+		<script type="text/javascript">
+		const paymentStart=()=>{
+			console.log("Payment started......");
+			let amount = $("#payment_field").val()
+			 console.log(amount);
+			if(amount=='' || amount==null) {
+				  //alert("amount is required ")
+				   swal("Failed", "Amount is required", "error");
+				  return;
+				  }
+			
+			
+			//code
+			  //we will use ajax to send request to server to create order
+			  $.ajax({
+			  url:'/user/create_order',
+			  data:JSON.stringify({amount:amount,info:'order_request'}),
+			  contentType:'application/json',
+			  type:'POST',
+			  dataType:'json',
+			  success:function(response) {
+			      //this function is invoked when success
+			      console.log(response);
+			      if (response.status = 'created') {
+			        //open payment form
+			        let options = {
+			          key: 'rzp_test_ZiRmy1KOJYIEvv',
+			          amount: response.amount,
+			          currency: 'INR',
+			          name: 'Smart Contact Manager',
+			          description: 'Donation',
+			          order_id: response.id,
+			          handler: function(response) {
+			            console.log(response.razorpay_payment_id);
+			            console.log(response.razorpay_order_id);
+			            console.log(response.razorpay_signature);
+			            console.log('payment successful');
+			            //alert("Payment sucessful")
+			            swal("Success", "Payment sucessful", "success");
+			          },
+			          prefill: {
+			              name: "",
+			              email: "",
+			              contact: ""
+			            },
+			            notes: {
+			              address: "Learncode "
+			            },
+			            theme: {
+			              color: "#3399cc"
+			            }
+
+			        };
+
+			        var rzp = new Razorpay(options);
+			        rzp.on('payment.failed', function(response) {
+			          alert(response.error.code);
+			          alert(response.error.description);
+			          alert(response.error.source);
+			          alert(response.error.step);
+			          alert(response.error.reason);
+			          alert(response.error.metadata.order_id);
+			          alert(response.error.metadata.payment_id);
+			          //alert("oops payment failed");
+			          swal("Failed!!", "oops payment failed", "error");
+			        });
+
+			        rzp.open();
+
+
+
+			      }
+			    },
+			  error:function(error){
+			  //invoked when error
+			  console.log(error);
+			  alert("something went wrong")
+			  }
+			  
+			  
+			  })
+			}
+		</script>
+		
+	</section>
+	
+
+
+</body>
+</html>
